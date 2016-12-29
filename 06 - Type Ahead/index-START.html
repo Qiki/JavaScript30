@@ -16,6 +16,51 @@
   </form>
 <script>
 const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+var cities = [];
+
+fetch(endpoint).then(blob => blob.json())
+               .then(data => cities.push(...data))
+
+function filterCity (inputValue, cityList) {
+  return cityList.filter(function(place) {
+
+    var city = place.city.toLowerCase();
+    var state = place.state.toLowerCase();
+
+    if (city.indexOf(inputValue.toLowerCase()) > -1 || state.indexOf(inputValue.toLowerCase()) > -1 ) {
+      return true;
+    }
+  });
+}
+
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+function showSuggestion() {
+  var inputValue = this.value;
+  var filterResult = filterCity(inputValue, cities);
+
+
+
+  var html = filterResult.map(result => {
+    var regex = new RegExp(this.value, 'gi');
+    var city = result.city.replace(regex, `<span class="hl">${this.value}</span>`);
+    var state = result.state.replace(regex, `<span class="hl">${this.value}</span>`);
+
+    return `<li>
+                <span class="name">${city}, ${state}</span>   
+                <span class="population">${numberWithCommas(result.population)}</span>
+            </li>`;
+  }).join('');
+
+  var suggestionDOMObj = document.querySelector('.suggestions');
+  suggestionDOMObj.innerHTML = html;
+}
+
+var input = document.querySelector('.search');
+input.addEventListener('change', showSuggestion);
+input.addEventListener('keyup', showSuggestion);
 
 </script>
   </body>
