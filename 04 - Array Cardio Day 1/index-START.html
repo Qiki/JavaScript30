@@ -33,28 +33,112 @@
 
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
+    // filter will return 2 out of 10
+    var fifteen = inventors.filter(function(investor) {
+      if (investor.year >= 1500 && investor.year < 1599) {
+        return true;// keep it
+      } 
+    });
+
+    // using the reduce to implement filter
+    // var fifteen = inventors.reduce(function(acc, investor) {
+    //    if (investor.year >= 1500 && investor.year < 1599) {
+    //     acc.push(inventor);
+    //   } 
+
+    //   return acc;
+    // }, []);
+
+
+    console.log(fifteen);
 
     // Array.prototype.map()
     // 2. Give us an array of the inventors' first and last names
+    // map return the amount of array you give it
+    var fullNames = inventors.map(function(investor) {
+        return investor.first + ' ' + investor.last;
+    });
+
+    console.log(fullNames);
 
     // Array.prototype.sort()
     // 3. Sort the inventors by birthdate, oldest to youngest
+    // two items, return 1, or 1-
+
+    var ordered = inventors.sort(function(firstPerson, secondPerson) {
+      if (firstPerson.year > secondPerson.year) {
+        return 1;
+      } else {
+        return -1;
+      }
+    });
+
+    // Simple way to implement
+    //var ordered = inventors.sort((a, b) => a.year > b.year ? 1 : -1);
+
+    console.table(ordered);
 
     // Array.prototype.reduce()
     // 4. How many years did all the inventors live?
 
+    var totalYears = inventors.reduce(function(total, investor) {
+      return total + (investor.passed -  investor.year);
+    }, 0);
+    console.log(totalYears);
+
     // 5. Sort the inventors by years lived
+
+    var oldest = inventors.sort(function(a, b) {
+      var lastGuy = a.passed - a.year;
+      var nextGuy = b.passed - b.year;
+
+      if (lastGuy > nextGuy) {
+        return -1;
+      } else {
+        return 1;
+      }
+    });
+
+    console.table(oldest);
 
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
+    // var category = document.querySelector('.mw-category');
+    // var links = Array.from(category.querySelectorAll('a'));
+
+    // // 
+    // var de = links.map(function(link) {
+    //   return link.textContent;
+    // }).filter(function(streetName) {
+    //   return streetName.includes('de');
+    // });
 
 
     // 7. sort Exercise
     // Sort the people alphabetically by last name
+    var alpha = people.sort(function(lastOne, nextOne) {
+      var [aFirst, aLast] = lastOne.split(', ');
+      var [bFirst, bLast] = nextOne.split(', ');
+      return aLast > bLast ? 1 : -1
+    });
+
+    
+
+    console.log(alpha);
 
     // 8. Reduce Exercise
     // Sum up the instances of each of these
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
+    var transportation = data.reduce(function(obj, item) {
+      if (!obj[item]) {
+        obj[item] = 0;
+      }
+
+      obj[item]++;
+      return obj;
+    }, {});
+
+    console.log(transportation);
 
   </script>
 </body>
